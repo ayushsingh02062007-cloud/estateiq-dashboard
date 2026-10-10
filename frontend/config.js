@@ -1,1 +1,1 @@
-window.API_BASE = 'http://localhost:8000/api';
+window.API_BASE = 'https://estateiq-dashboard-1.onrender.com/api';
