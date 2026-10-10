@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EstateIQ - Facility and Estate Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E8EEEA;--panel:#F7FAF8;--ink:#10302B;--mute:#5B726C;--line:#CBD8D2;--lagoon:#1E6F63;--gold:#E3A21A;--red:#D0342C;--ok:#2E9B6A}
+@media(prefers-color-scheme:dark){:root{--bg:#0D1B19;--panel:#13272A;--ink:#E4F0EC;--mute:#8FA8A1;--line:#254039;--lagoon:#4FC3AE;--gold:#F0B84A;--red:#FF6B5E;--ok:#4FD19A}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;margin:0;letter-spacing:-.01em}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--line)}
+.brand{font:800 24px 'Bricolage Grotesque';letter-spacing:-.03em}.brand i{font-style:normal;color:var(--lagoon)}
+select,button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.roles{display:flex;gap:4px}.roles button{border-radius:20px}.roles .on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+main{max-width:1280px;margin:0 auto;padding:20px 24px 60px;display:grid;gap:20px}
+.hero{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:20px}
+.stage{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#cfe3dc,#e9f1ed);min-height:480px;border:1px solid var(--line)}
+@media(prefers-color-scheme:dark){.stage{background:linear-gradient(180deg,#143632,#0d1f1d)}}
+#cv{position:absolute;inset:0;width:100%;height:100%;cursor:grab}
+.stage h1{position:absolute;left:22px;top:18px;font-size:clamp(24px,3.4vw,38px);max-width:60%;pointer-events:none;color:#10302B}
+@media(prefers-color-scheme:dark){.stage h1{color:#E4F0EC}}
+.stage p.sub{position:absolute;left:22px;top:calc(18px + 3.4vw + 34px);margin:0;color:var(--mute);pointer-events:none;max-width:40ch}
+.zinfo{position:absolute;left:14px;right:14px;bottom:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:grid;grid-template-columns:auto 1fr;gap:4px 18px}
+.zinfo h3{grid-column:1/-1;font-size:17px}.kv{display:flex;flex-wrap:wrap;gap:6px 18px;grid-column:1/-1;color:var(--mute);font-size:13px}.kv b{color:var(--ink);font-weight:600}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}.ok{background:var(--ok)}.watch{background:var(--gold)}.alert{background:var(--red)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.card h2{font-size:19px;margin-bottom:10px}.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.score{display:flex;align-items:center;gap:18px;margin-bottom:12px}.big{font:800 54px 'Bricolage Grotesque';line-height:1;color:var(--lagoon)}
+.bar{display:grid;grid-template-columns:130px 1fr 34px;gap:10px;align-items:center;font-size:13px;margin:7px 0}.bar span.t{height:8px;border-radius:5px;background:var(--line);overflow:hidden}.bar span.t i{display:block;height:100%;border-radius:5px}
+.rec{border-left:4px solid var(--gold);padding:8px 12px;margin:10px 0;background:color-mix(in srgb,var(--gold) 8%,transparent);border-radius:0 10px 10px 0}.rec.High{border-color:var(--red)}
+.rec h3{font-size:15px}.rec small{display:block;color:var(--mute)}.rec .a{margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}th{color:var(--mute);font-weight:500}
+.sl{display:grid;grid-template-columns:150px 1fr 50px;gap:10px;align-items:center;margin:8px 0}input[type=range]{accent-color:var(--lagoon);width:100%}
+.res{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.res div{background:var(--bg);border-radius:10px;padding:10px}.res b{display:block;font:700 22px 'Bricolage Grotesque'}
+ul.as{margin:0;padding-left:18px;color:var(--mute);font-size:13px}.hide{display:none!important}
+.err{padding:30px;text-align:center;color:var(--red)}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.stage h1{max-width:90%}.stage p.sub{display:none}}
+</style></head><body>
+<header><div class="brand">Estate<i>IQ</i></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+<select id="fac" aria-label="Facility type"></select>
+<div class="roles" id="roles"><button data-r="admin" class="on">Administrator</button><button data-r="ops">Operations</button><button data-r="sustain">Sustainability</button></div></div></header>
+<main id="app"><div class="err" id="err" style="display:none"></div>
+<section class="hero">
+ <div class="stage"><canvas id="cv"></canvas><h1 id="title">Loading facility...</h1><p class="sub">Drag to rotate, scroll to zoom, click a building for its readings.</p>
+  <div class="zinfo" id="zinfo"></div></div>
+ <div class="card" data-roles="admin sustain"><h2>Sustainability scorecard</h2><div id="score"></div></div>
+</section>
+<section class="card"><h2>What to do next</h2><div id="recs"></div></section>
+<section class="grid2">
+ <div class="card" data-roles="admin ops sustain"><h2>Energy: last 72h and next 24h</h2><canvas id="c1" height="190"></canvas></div>
+ <div class="card" data-roles="admin ops"><h2>PM2.5: last 72h and next 24h</h2><canvas id="c2" height="190"></canvas></div>
+</section>
+<section class="grid2">
+ <div class="card" data-roles="admin ops"><h2>Detected anomalies</h2><div id="anom"></div></div>
+ <div class="card" data-roles="admin sustain"><h2>Scenario simulator</h2>
+  <div class="sl"><label for="s1">Raise AC setpoint</label><input id="s1" type="range" min="0" max="4" step="1" value="0"><span id="v1">0 C</span></div>
+  <div class="sl"><label for="s2">Shift flexible load off-peak</label><input id="s2" type="range" min="0" max="100" step="10" value="0"><span id="v2">0%</span></div>
+  <div class="sl"><label for="s3">Waste pickups per day</label><input id="s3" type="range" min="1" max="4" step="1" value="1"><span id="v3">1</span></div>
+  <div class="res" id="res"></div><p style="color:var(--mute);font-size:12px" id="resn"></p></div>
+</section>
+<section class="card"><h2>Assumptions and limits</h2><ul class="as" id="as"></ul></section>
+</main>
+<script src="config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const API=window.API_BASE||'/api',$=id=>document.getElementById(id),S={fac:'hospital',role:'admin',d:null,sel:null,charts:{}};
+const COL={ok:0x2E9B6A,watch:0xE3A21A,alert:0xD0342C},UNITS={pm25:'ug/m3',energy:'kWh',water:'KL',waste:'% full',parking:'% used'};
+// ---------- 3D scene ----------
+const cv=$('cv'),R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true}),sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(42,1,.1,200);
+R.setPixelRatio(Math.min(devicePixelRatio,2));sc.add(new THREE.HemisphereLight(0xffffff,0x88aa99,.85));
+const sun=new THREE.DirectionalLight(0xfff1d0,.8);sun.position.set(10,18,8);sc.add(sun);
+const ground=new THREE.Mesh(new THREE.BoxGeometry(30,.3,20),new THREE.MeshLambertMaterial({color:0xcfdcd4}));ground.position.y=-.15;sc.add(ground);
+const road=new THREE.Mesh(new THREE.BoxGeometry(30,.05,1.6),new THREE.MeshLambertMaterial({color:0x6d7d78}));road.position.set(0,.02,.9);sc.add(road);
+const grp=new THREE.Group();sc.add(grp);let rot=.7,tilt=.62,dist=26,auto=true,meshes=[];
+for(let i=0;i<14;i++){const t=new THREE.Group(),tr=new THREE.Mesh(new THREE.CylinderGeometry(.08,.1,.5,6),new THREE.MeshLambertMaterial({color:0x6b4f3a})),lf=new THREE.Mesh(new THREE.ConeGeometry(.5,1.3,8),new THREE.MeshLambertMaterial({color:0x2f8a5b}));tr.position.y=.25;lf.position.y=1.1;t.add(tr,lf);t.position.set(-13+i*2+Math.sin(i*3)*.5,0,i%2?8.3:-8.2);sc.add(t)}
+function build(){while(grp.children.length)grp.remove(grp.children[0]);meshes=[];
+ S.d.zones.forEach(z=>{const g=new THREE.Group(),m=new THREE.MeshLambertMaterial({color:0xf2f5f3}),b=new THREE.Mesh(new THREE.BoxGeometry(z.w,z.h,z.d),m);b.position.y=z.h/2;
+  const cap=new THREE.Mesh(new THREE.BoxGeometry(z.w+.1,.18,z.d+.1),new THREE.MeshLambertMaterial({color:COL[z.status],emissive:COL[z.status],emissiveIntensity:z.status==='alert'?.5:.15}));cap.position.y=z.h+.09;
+  const e=new THREE.LineSegments(new THREE.EdgesGeometry(b.geometry),new THREE.LineBasicMaterial({color:0x10302B,transparent:true,opacity:.35}));e.position.y=z.h/2;
+  g.add(b,cap,e);g.position.set(z.x,0,z.z);b.userData={z};cap.userData={z};g.userData={z,cap};meshes.push(b,cap);grp.add(g)})}
+function size(){const w=cv.parentElement.clientWidth,h=cv.parentElement.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+let down=null;cv.onpointerdown=e=>{down={x:e.clientX,y:e.clientY,r:rot,t:tilt};auto=false;cv.setPointerCapture(e.pointerId)};
+cv.onpointermove=e=>{if(!down)return;rot=down.r-(e.clientX-down.x)*.006;tilt=Math.max(.2,Math.min(1.3,down.t+(e.clientY-down.y)*.005))};
+cv.onpointerup=e=>{if(down&&Math.hypot(e.clientX-down.x,e.clientY-down.y)<5)pick(e);down=null};
+cv.onwheel=e=>{e.preventDefault();dist=Math.max(14,Math.min(40,dist+e.deltaY*.02))};
+function pick(e){const r=cv.getBoundingClientRect(),ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1),cam);const h=ray.intersectObjects(meshes)[0];if(h){S.sel=h.object.userData.z.id;zinfo()}}
+function loop(t){requestAnimationFrame(loop);if(auto)rot+=.0025;cam.position.set(Math.sin(rot)*dist*Math.cos(tilt),dist*Math.sin(tilt)+2,Math.cos(rot)*dist*Math.cos(tilt));cam.lookAt(0,1,0);
+ grp.children.forEach(g=>{const z=g.userData.z;if(z.status==='alert')g.userData.cap.material.emissiveIntensity=.35+.3*Math.sin(t/260);g.children[0].material.color.set(z.id===S.sel?0xffffff:0xf2f5f3);g.position.y=z.id===S.sel?.25:0});R.render(sc,cam)}
+addEventListener('resize',size);size();requestAnimationFrame(loop);
+// ---------- UI ----------
+function zinfo(){const z=S.d.zones.find(z=>z.id===S.sel)||S.d.zones.find(z=>z.status==='alert')||S.d.zones[0];S.sel=z.id;
+ $('zinfo').innerHTML=`<h3><span class="dot ${z.status}"></span>${z.name} <span style="color:var(--mute);font-weight:400;font-size:13px">${z.status==='ok'?'Normal':z.status==='watch'?'Watch':'Needs attention'}</span></h3><div class="kv">${Object.entries(z.latest).map(([k,v])=>`<span>${{pm25:'PM2.5',energy:'Energy',water:'Water',waste:'Bin fill',parking:'Parking'}[k]} <b>${v} ${UNITS[k]}</b></span>`).join('')}</div>`}
+const fmt=ts=>new Date(ts.replace(' ','T')).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric'});
+function chart(id,o){const hs=o.history,fu=o.future,L=[...hs,...fu].map(p=>fmt(p.ts)),n=hs.length,pad=a=>[...Array(n).fill(null),...a];
+ const cs=getComputedStyle(document.body),l=cs.getPropertyValue('--lagoon').trim(),g=cs.getPropertyValue('--gold').trim();
+ if(S.charts[id])S.charts[id].destroy();
+ S.charts[id]=new Chart($(id),{type:'line',data:{labels:L,datasets:[{label:'Actual',data:[...hs.map(p=>p.v),...Array(fu.length).fill(null)],borderColor:l,pointRadius:0,borderWidth:2,tension:.3},
+ {label:'Forecast',data:pad(fu.map(p=>p.v)),borderColor:g,borderDash:[5,4],pointRadius:0,borderWidth:2,tension:.3},
+ {label:'Upper',data:pad(fu.map(p=>p.hi)),borderColor:'transparent',backgroundColor:g+'33',pointRadius:0,fill:'+1'},{label:'Lower',data:pad(fu.map(p=>p.lo)),borderColor:'transparent',pointRadius:0}]},
+ options:{animation:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{filter:i=>i.text==='Actual'||i.text==='Forecast'}}},scales:{x:{ticks:{maxTicksLimit:7},grid:{display:false}},y:{title:{display:true,text:o.unit}}}}})}
+function render(){const d=S.d;$('title').textContent=d.facility.name;zinfo();
+ $('score').innerHTML=`<div class="score"><div class="big">${d.scorecard.overall}</div><div style="color:var(--mute)">Overall sustainability index out of 100. Higher is better.</div></div>`+d.scorecard.items.map(i=>`<div class="bar" title="${i.note}"><span>${i.label}</span><span class="t"><i style="width:${i.score}%;background:${i.score>75?'var(--ok)':i.score>50?'var(--gold)':'var(--red)'}"></i></span><b>${i.score}</b></div><div style="font-size:12px;color:var(--mute);margin:-4px 0 6px 140px">${i.note}</div>`).join('');
+ const rs=d.recommendations.filter(r=>r.roles.includes(S.role));
+ $('recs').innerHTML=rs.length?rs.map(r=>`<div class="rec ${r.priority}"><h3>${r.title}</h3><small>${r.priority} priority, ${r.zone}. Why: ${r.why}</small><div class="a"><b>Action:</b> ${r.action} <span style="color:var(--mute)">Impact: ${r.impact}</span></div></div>`).join(''):'<p>No actions needed for this role right now.</p>';
+ chart('c1',d.forecast.energy);chart('c2',d.forecast.pm25);
+ $('anom').innerHTML=d.anomalies.length?`<table><tr><th>Zone</th><th>Signal</th><th>Now</th><th>Expected</th><th>Since</th></tr>${d.anomalies.map(a=>`<tr><td>${a.zone}</td><td>${{energy:'Energy',water:'Water',pm25:'PM2.5'}[a.metric]}</td><td>${a.value} ${a.unit}</td><td>${a.expected}</td><td>${fmt(a.since)}</td></tr>`).join('')}</table>`:'<p>No anomalies in the last 48 hours.</p>';
+ $('as').innerHTML=d.assumptions.map(a=>`<li>${a}</li>`).join('');roles();build();sim()}
+function roles(){document.querySelectorAll('[data-roles]').forEach(e=>e.classList.toggle('hide',!e.dataset.roles.split(' ').includes(S.role)))}
+let tm;function sim(){clearTimeout(tm);tm=setTimeout(async()=>{const v=i=>+$('s'+i).value;$('v1').textContent=v(1)+' C';$('v2').textContent=v(2)+'%';$('v3').textContent=v(3);
+ const r=await(await fetch(API+'/simulate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({facility:S.fac,setpoint_delta:v(1),shift_pct:v(2),collections:v(3)})})).json();
+ $('res').innerHTML=`<div><b>${r.kwh_saved.toLocaleString('en-IN')}</b>kWh saved / month</div><div><b>Rs ${r.rupees_saved.toLocaleString('en-IN')}</b>saved / month</div><div><b>${r.co2_tonnes_saved}</b>tCO2 avoided / month</div>`+r.waste.map(w=>`<div style="grid-column:1/-1">${w.zone}: peak bin fill ${w.peak_fill_now}% to <b>${w.peak_fill_new}%</b> ${w.overflow?'(overflow risk)':''}</div>`).join('');$('resn').textContent=r.notes},150)}
+['s1','s2','s3'].forEach(i=>$(i).oninput=sim);
+document.querySelectorAll('#roles button').forEach(b=>b.onclick=()=>{S.role=b.dataset.r;document.querySelectorAll('#roles button').forEach(x=>x.classList.toggle('on',x===b));if(S.d)render()});
+async function load(){try{$('err').style.display='none';S.d=await(await fetch(`${API}/dashboard?facility=${S.fac}`)).json();render()}catch(e){$('err').style.display='block';$('err').textContent='Cannot reach the EstateIQ API. Start the backend (docker compose up --build) or set API_BASE in config.js.'}}
+(async()=>{try{const f=await(await fetch(API+'/facilities')).json();$('fac').innerHTML=f.map(x=>`<option value="${x.id}">${x.kind}</option>`).join('');$('fac').onchange=e=>{S.fac=e.target.value;S.sel=null;load()};}catch(e){}load()})();
+</script></body></html>
